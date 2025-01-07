@@ -22,9 +22,9 @@ class MessageController extends Controller
     public function store(Request $request)
     {
 
-        // $request->validate([
-        //     'phone_number' => 'required|phone:ID' 
-        // ]);
+        $request->validate([
+            'phone_number' => 'required|phone:ID' 
+        ]);
 
         $validator = Validator::make($request->all(), [
             'phone_number' => 'required|numeric'

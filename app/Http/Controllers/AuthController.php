@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -31,8 +32,14 @@ class AuthController extends Controller
 
         if ($validator->fails()) return response()->json(['message' => $validator->errors()->first()], 422);
 
-        if (Auth::attempt(['username' => $request->username, "password" => $request->password])) {
-            $user = Auth::user();
+        $user = User::where('username', $request->username)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => "User not found"
+            ], 404);
+        }
+
+        if ($user && Hash::check($request->password, $user->password)) {
             $user->token = $user->createToken(Str::random(50))->plainTextToken;
             return response()->json(["message" => "Login Success", "data" => $user]);
         }

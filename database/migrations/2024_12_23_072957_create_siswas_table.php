@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('agama');
             $table->string('alamat_lengkap');
             $table->string('no_telepon');
-            $table->foreignId('asal_sekolah');
+            $table->string('asal_sekolah');
             $table->foreignId('ortu_id');
             $table->foreignId("jurusan_id");
-            $table->timestamps();
+            $table->timestamp("created_at");
         });
     }
 

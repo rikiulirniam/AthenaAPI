@@ -11,6 +11,8 @@ class Siswa extends Model
     use HasFactory;
 
     protected $guarded = ["id"];
+    public $timestamps = false;
+
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
@@ -21,8 +23,8 @@ class Siswa extends Model
         return $this->belongsTo(Ortu::class);
     }
 
-    public function asal_sekolah()
-    {
-        return $this->belongsTo(AsalSekolah::class);
-    }
+    // public function asal_sekolah()
+    // {
+    //     return $this->belongsTo(AsalSekolah::class);
+    // }
 }
