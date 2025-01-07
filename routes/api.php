@@ -16,9 +16,11 @@ Route::middleware([SetResponse::class, AuthSanctum::class])->group(function () {
     Route::post('/auth/logout', [AuthController::class, "logout"]);
     Route::get('/auth/me', [AuthController::class, "index"]);
 
-    Route::apiResource("/siswa", SiswaController::class);
+    Route::apiResource("/siswa", SiswaController::class)->except("store");
     Route::apiResource('/messages', MessageController::class)->middleware('auth');
 });
+
+Route::post("/siswa", [SiswaController::class, 'store']);
 // Route::apiResource('/siswa')
 
 Route::fallback(function () {

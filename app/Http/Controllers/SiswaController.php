@@ -67,8 +67,6 @@ class SiswaController extends Controller
             "ortu_id" => $ortu->id,
         ]);
 
-
-
         return response()->json(['message' => "Data Created"], 200);
     }
 
