@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Middleware\AuthSanctum;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(SetResponse::class)->group(function () {
 
+    Route::get("/jurusans", [JurusanController::class, 'index']);
     Route::post("/siswa", [SiswaController::class, 'store']);
     Route::post("/auth/login", [AuthController::class, "login"]);
     Route::middleware(AuthSanctum::class)->group(function () {
@@ -20,6 +22,7 @@ Route::middleware(SetResponse::class)->group(function () {
         Route::post('/auth/logout', [AuthController::class, "logout"]);
 
         Route::apiResource("/siswa", SiswaController::class)->except("store");
+        Route::apiResource("/jurusans", JurusanController::class)->except("index");
         Route::apiResource('/messages', MessageController::class)->middleware('auth');
     });
     Route::fallback(function () {
@@ -28,5 +31,3 @@ Route::middleware(SetResponse::class)->group(function () {
         ], 404);
     });
 });
-
-

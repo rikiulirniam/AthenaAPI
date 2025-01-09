@@ -13,16 +13,14 @@ class AuthController extends Controller
 {
     public function index()
     {
-        $user = Auth::check();
-        if (!$user) return response()->json([
-            'message' => 'Unauthenticated',
-        ], 401);
-
+        $user = Auth::user();
+        $user->token = $user->currentAccessToken()->name;
         return response()->json([
             "message" => "Success",
-            "data" => Auth::user()
+            "data" => $user
         ], 200);
     }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -48,6 +46,9 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken->delete();
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            "message" => "Logout Success"
+        ]);
     }
 }
