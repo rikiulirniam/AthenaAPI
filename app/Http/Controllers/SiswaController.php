@@ -15,9 +15,14 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
+        $startIn = $request->query("startIn");
+        $length = $request->query("length");
         $jurusan = $request->query("jurusan_id");
+        $sort = $request->query("sort");
         $siswa = !$jurusan ? Siswa::query()->with("ortu")->with('jurusan')->get() : Siswa::query()->with('ortu')->with('jurusan')->where("jurusan_id", $jurusan)->get();
 
+        if ($sort == "desc") $siswa = $siswa->sortByDesc("created_at");
+        $siswa = $siswa->slice($startIn, $length);
         return Siswas::collection($siswa);
     }
 

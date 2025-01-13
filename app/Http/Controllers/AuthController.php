@@ -33,7 +33,7 @@ class AuthController extends Controller
         $user = User::where('username', $request->username)->first();
         if (!$user) {
             return response()->json([
-                'message' => "User not found"
+                'message' => "User tidak ditemukan"
             ], 404);
         }
 
