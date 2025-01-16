@@ -15,14 +15,25 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
-        $startIn = $request->query("startIn");
-        $length = $request->query("length");
+        $startIn = $request->query("startIn", 0);
+        $length = $request->query("length", 10);
         $jurusan = $request->query("jurusan_id");
-        $sort = $request->query("sort");
-        $siswa = !$jurusan ? Siswa::query()->with(relations: "ortu")->with('jurusan')->get() : Siswa::query()->with('ortu')->with('jurusan')->where("jurusan_id", $jurusan)->get();
+        $sort = $request->query("sort", "asc");
+        $search = $request->query("search");
 
-        if ($sort == "desc") $siswa = $siswa->sortByDesc("created_at");
-        $siswa = $siswa->slice($startIn, $length);
+        $query = Siswa::query()->with(['ortu', 'jurusan']);
+
+        if ($jurusan) {
+            $query->where('jurusan_id', $jurusan);
+        }
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $query->orderBy('created_at', $sort === "desc" ? 'desc' : 'asc');
+        $siswa = $query->skip($startIn)->take($length)->get();
+
         return Siswas::collection($siswa);
     }
 
