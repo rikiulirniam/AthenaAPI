@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 
+
 Route::middleware(SetResponse::class)->group(function () {
 
     Route::get("/jurusans", [JurusanController::class, 'index']);
@@ -31,3 +32,22 @@ Route::middleware(SetResponse::class)->group(function () {
         ], 404);
     });
 });
+
+
+
+// use Illuminate\Support\Facades\Mail;
+
+// Route::get('/test-email', function () {
+//     Mail::raw('Ini adalah email percobaan.', function ($message) {
+//         $message->to('rikiulir@gmail.com')
+//             ->subject('Email Test');
+//     });
+
+//     return 'Email berhasil dikirim.';
+// });
+
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+// Route::get('/qr/{number}', function ($number) {
+//     return QrCode::size(300)->generate($number);
+// });
