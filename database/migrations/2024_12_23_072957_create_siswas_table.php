@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('alamat_lengkap');
             $table->string('no_telepon');
             $table->string('asal_sekolah');
+            $table->boolean('status');
             $table->foreignId('ortu_id');
             $table->foreignId("jurusan_id");
             $table->timestamp("created_at");

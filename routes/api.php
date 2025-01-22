@@ -23,12 +23,14 @@ Route::middleware(SetResponse::class)->group(function () {
         Route::post('/auth/logout', [AuthController::class, "logout"]);
 
         Route::apiResource("/siswa", SiswaController::class)->except("store");
+        Route::post("/siswa/verify", [SiswaController::class, "verifyEnrollment"]);
+
         Route::apiResource("/jurusans", JurusanController::class)->except("index");
         Route::apiResource('/messages', MessageController::class)->middleware('auth');
     });
     Route::fallback(function () {
         return response()->json([
-            'message' => "Not found. mau diapain api nya le",
+            'message' => "Not found.",
         ], 404);
     });
 });
