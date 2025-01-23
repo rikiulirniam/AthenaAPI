@@ -24,10 +24,11 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $startIn = $request->query("startIn", 0);
-        $length = $request->query("length", 10);
+        $length = $request->query("length"); // Jangan tetapkan default untuk length
         $jurusan = $request->query("jurusan_id");
         $sort = $request->query("sort", "asc");
         $search = $request->query("search");
+        $status = $request->query("verified");
 
         $query = Siswa::query()->with(['ortu', 'jurusan']);
 
@@ -39,11 +40,26 @@ class SiswaController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
+        if ($status === 'true') {
+            $query->where('status', true);
+        } else if ($status === "false") {
+            $query->where("status", false);
+        }
+
         $query->orderBy('created_at', $sort === "desc" ? 'desc' : 'asc');
-        $siswa = $query->skip($startIn)->take($length)->get();
+
+        // Hanya tambahkan skip dan take jika length diberikan
+        if (!is_null($length)) {
+            $query->skip($startIn)->take($length);
+        }
+
+        $siswa = $query->get();
 
         return Siswas::collection($siswa);
     }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -97,26 +113,7 @@ class SiswaController extends Controller
             "ortu_id" => $ortu->id,
         ]);
 
-        // Membuat QR Code
-        //  $builder = new Builder(
-        //      writer: new PngWriter(),
-        //      data: $siswa->id, // Data yang akan di-encode
-        //      encoding: new Encoding('UTF-8'),
-        //      errorCorrectionLevel: ErrorCorrectionLevel::High, // Level koreksi error
-        //      size: 300, // Ukuran QR Code
-        //      margin: 10  // Margin QR Code
-        //  );
-
-        // Bangun QR Code
-        //  $result = $builder->build();
-
-        // Simpan QR Code ke Object Storage (misalnya S3)
-        //  $filePath = "qrcodes/{$siswa->id}.png";
-        //  Storage::disk('public')->put($filePath, $result->getString());
-
-        // Kirim email dengan QR Code
         try {
-            //  $qrCodeUrl = Storage::disk('public')->url($filePath);
             Mail::send('emails.qr-with-view', ['number' => $siswa->id], function ($message) use ($request) {
                 $message->to($request->email)->subject('QR Code Anda');
             });
@@ -224,7 +221,7 @@ class SiswaController extends Controller
                 "message" => "Siswa tidak ditemukan",
             ], 404);
         }
-        if (!$siswa->status == 1) {
+        if ($siswa->status == 1) {
             return response()->json([
                 "message" => "Siswa sudah terverifikasi"
             ], 422);
@@ -235,7 +232,7 @@ class SiswaController extends Controller
         ]);
 
         return response()->json([
-            "message" => "Siswa bernama $siswa->name berhasil daftar ulang!"
+            "message" => "$siswa->name berhasil daftar ulang!"
         ], 200);
     }
 }

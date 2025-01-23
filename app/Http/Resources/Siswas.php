@@ -18,6 +18,7 @@ class Siswas extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "status" => $this->status,
             "nisn" => $this->nisn,
             "nik" => $this->nik,
             "tempat_lahir" => $this->tempat_lahir,
