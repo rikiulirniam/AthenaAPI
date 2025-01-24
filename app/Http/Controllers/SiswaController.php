@@ -45,7 +45,7 @@ class SiswaController extends Controller
         } else if ($status === "false") {
             $query->where("status", false);
         }
-
+        $query->orderBy("name", "asc");
         $query->orderBy('created_at', $sort === "desc" ? 'desc' : 'asc');
 
         // Hanya tambahkan skip dan take jika length diberikan
