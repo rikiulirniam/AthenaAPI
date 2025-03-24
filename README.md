@@ -1,5 +1,5 @@
 ## Athena RestAPI for School Enrollment Application
-# Created using Laravel 11 & Sanctum
+### Created using Laravel 11 & Sanctum
 
 ## How to run
 1. install depencency :
