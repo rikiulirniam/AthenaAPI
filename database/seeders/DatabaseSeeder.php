@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::create([
-        //     'username' => 'admin',
-        //     'password' => Hash::make("123123qweqwe")
-        // ]);
+        User::create([
+            'username' => 'admin',
+            'password' => Hash::make('admin123')
+        ]);
 
         for ($i = 1; $i <= 50; $i++) {
             $ortu = Ortu::create([
@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 'asal_sekolah' => 'Sekolah ' . $i,
                 'jurusan_id' => rand(1, 9),
                 'ortu_id' => $ortu->id,
+                'created_at' => now(),
             ]);
         }
     }

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean('status');
             $table->foreignId('ortu_id');
             $table->foreignId("jurusan_id");
-            $table->timestamp("created_at");
+            $table->timestamp("created_at")->useCurrent();
         });
     }
 

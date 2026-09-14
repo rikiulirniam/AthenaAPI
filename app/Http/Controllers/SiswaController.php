@@ -119,10 +119,10 @@ class SiswaController extends Controller
             });
         } catch (\Exception $e) {
             Log::error('Error sending email: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to send email'], 500);
+            return response()->json(['error' => 'Gagal mengirim email: ' . $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => "Data Created"], 200);
+        return response()->json(['message' => "Data Created", 'data' => $siswa], 200);
     }
 
 
